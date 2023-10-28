@@ -76,7 +76,6 @@ def main(stdscr):
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_RED)
     curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_GREEN)
     curses.init_pair(4, curses.COLOR_WHITE, curses.COLOR_BLUE)
-    #stdscr.bkgd(' ', curses.color_pair(1))
     stdscr.clear()
 
     if curses.COLS < 92 or curses.LINES < 30:
@@ -130,6 +129,8 @@ def main(stdscr):
 
         if password == "bill": # yeah yeah
             break
+        elif password == "quit!":
+            exit(0)
         else:
             work.clear()
             work.addstr(0, 0, "Incorrect Password.")
@@ -142,9 +143,13 @@ def main(stdscr):
     work.refresh()
 
     time.sleep(1)
+    do_clear = True
 
     while True:
-        work.clear()
+        if do_clear:
+            work.clear()
+
+        do_clear = True
         work.addstr(1, 2, "Files")
 
         work.addstr(3, 5, "1. Journal")
@@ -156,7 +161,6 @@ def main(stdscr):
         work.addstr(10, 2, "Enter selection: ")
 
         menu_selection = work.get_wch()
-        work.clear()
 
         if menu_selection == "6":
             main(stdscr) # Eh, I don't really care about stack depth here.
@@ -171,6 +175,7 @@ def main(stdscr):
         elif menu_selection == "5":
             flood_text(work, entries[4])
         else:
+            do_clear = False
             continue
 
 
